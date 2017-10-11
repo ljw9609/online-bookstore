@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding='UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.entity">
+    <class name="com.entity.OrderItemEntity" table="orderitem">
+        <id name="id" type="int">
+            <column name="id" length="11" />
+            <generator class="native" />
+        </id>
+        <property name="book_id" generated="never" lazy="true" type="int">
+            <column name="book_id" />
+        </property>
+        <property name="order_id" generated="never" lazy="true" type="int">
+            <column name="order_id" />
+        </property>
+        <property name="amount" generated="never" lazy="true" type="int">
+            <column name="amount" />
+        </property>
+        <property name="price" generated="never" lazy="true" type="java.lang.Double">
+            <column name="price" />
+        </property>
+    </class>
+</hibernate-mapping>

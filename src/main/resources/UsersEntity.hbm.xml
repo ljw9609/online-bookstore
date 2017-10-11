@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding='UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.entity">
+    <class name="com.entity.UsersEntity" table="users">
+        <id name="id" type="int">
+            <column name="id" length="11" />
+            <generator class="native" />
+        </id>
+        <property generated="never" lazy="true" name="username" type="java.lang.String">
+            <column name="username"  />
+        </property>
+        <property name="password" generated="never" lazy="true" type="java.lang.String">
+            <column name="password" />
+        </property>
+        <property name="confirmpassword" generated="never" lazy="true" type="java.lang.String">
+            <column name="confirmpassword" />
+        </property>
+        <property name="email" generated="never" lazy="true" type="java.lang.String">
+            <column name="email" />
+        </property>
+        <property name="is_admin" generated="never" lazy="true" type="int">
+            <column name="is_admin" />
+        </property>
+        <property name="profile_id" generated="never" lazy="true" type="java.lang.String">
+            <column name="profile_id" />
+        </property>
+    </class>
+</hibernate-mapping>

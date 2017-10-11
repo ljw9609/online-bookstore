@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding='UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.entity">
+<class name="com.entity.OrdersEntity" table="orders">
+    <id name="id" type="int">
+        <column name="id" length="11" />
+        <generator class="native" />
+    </id>
+    <property name="username" generated="never" lazy="true" type="java.lang.String">
+        <column name="username"  />
+    </property>
+    <property name="receiver" generated="never" lazy="true" type="java.lang.String">
+        <column name="receiver" />
+    </property>
+    <property name="mobile" generated="never" lazy="true" type="java.lang.String">
+        <column name="mobile" />
+    </property>
+    <property name="address" generated="never" lazy="true" type="java.lang.String">
+        <column name="address" />
+    </property>
+    <property name="total_price" generated="never" lazy="true" type="java.lang.Double">
+        <column name="total_price" />
+    </property>
+    <property name="orderdate" generated="never" lazy="true" type="timestamp">
+        <column name="orderdate" />
+    </property>
+    <set name="orderitems" lazy="true" inverse="true">
+        <key column="order_id" />
+        <one-to-many class="com.entity.OrderItemEntity" />
+    </set>
+</class>
+</hibernate-mapping>

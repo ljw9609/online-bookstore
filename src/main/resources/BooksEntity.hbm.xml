@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding='UTF-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.entity">
+    <class name="com.entity.BooksEntity" table="books">
+        <id name="id" type="int">
+            <column name="id" length="11" />
+            <generator class="native" />
+        </id>
+        <property name="isbn" generated="never" lazy="true" type="java.lang.String">
+            <column name="isbn"  />
+        </property>
+        <property name="title" generated="never" lazy="true" type="java.lang.String">
+            <column name="title" />
+        </property>
+        <property name="author" generated="never" lazy="true" type="java.lang.String">
+            <column name="author" />
+        </property>
+        <property name="press" generated="never" lazy="true" type="java.lang.String">
+            <column name="press" />
+        </property>
+        <property name="intro" generated="never" lazy="true" type="java.lang.String">
+            <column name="intro" />
+        </property>
+        <property name="price" generated="never" lazy="true" type="java.lang.Double">
+            <column name="price" />
+        </property>
+        <property name="amount" generated="never" lazy="true" type="java.lang.Integer">
+            <column name="amount" />
+        </property>
+        <property name="categoryid" generated="never" lazy="true" type="java.lang.Integer">
+            <column name="categoryid"/>
+        </property>
+        <property name="profile_id" generated="never" lazy="true" type="java.lang.String">
+            <column name="profile_id" />
+        </property>
+    </class>
+</hibernate-mapping>

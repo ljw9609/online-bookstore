@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.allowed.action.names" value="[a-zA-Z0-9._!/\-]*"></constant>
+    <constant name="struts.multipart.saveDir" value="/tmp"></constant>
+    <package name="loginout" namespace="/" extends="struts-default">
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"></result-type>
+        </result-types>
+        <action name="user_login" method="login" class="com.actions.UserActions">
+            <result name="loginfail">/signin.jsp</result>
+            <result name="loginsuccess">/index.jsp</result>
+        </action>
+        <action name="user_regist" method="regist" class="com.actions.UserActions">
+            <result name="registfail">/signup.jsp</result>
+            <result name="registsuccess">/index.jsp</result>
+        </action>
+        <action name="checkUsernameAvailable" class="com.actions.UserActions" method="checkUsernameAvailable">
+            <result name="ajax" type="json">
+                <param name="root">params</param>
+            </result>
+        </action>
+    </package>
+
+    <package name="buy" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="isLogin" class="com.actions.Interceptor.isLogin"></interceptor>
+            <interceptor-stack name="isLoginCheck">
+                <interceptor-ref name="isLogin"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="isLoginCheck"></default-interceptor-ref>
+
+        <global-results>
+            <result name="403" type="httpheader">
+                  <param name="error">403</param>
+                  <param name="errorMessage">403 Forbidden</param>
+            </result>
+            <result name="login" type="redirect">/signin.jsp</result>
+        </global-results>
+
+        <action name="get_order" class="com.actions.BuyActions" method="getOrder">
+            <result name="getordersuccess">/myorder.jsp</result>
+        </action>
+        <action name="buy2" class="com.actions.BuyActions" method="cart_method2">
+            <result name="success">/cart2.jsp</result>
+            <result name="order">/order2.jsp</result>
+        </action>
+        <action name="submit_order2" class="com.actions.BuyActions" method="submit_order2">
+            <result name="success">/index.jsp</result>
+        </action>
+        <action name="show_item" class="com.actions.BuyActions" method="show_item">
+            <result name="success">/orderitem.jsp</result>
+        </action>
+    </package>
+    <package name="book" namespace="/" extends="struts-default">
+        <action name="show_catelog" class="com.actions.BookActions" method="catelog">
+            <result name="success">/catelog3.jsp</result>
+        </action>
+        <action name="show_detail" class="com.actions.BookActions" method="show_detail">
+            <result name="success">/detail2.jsp</result>
+        </action>
+        <action name="search" class="com.actions.BookActions" method="search">
+            <result name="success">/search2.jsp</result>
+        </action>
+    </package>
+    <package name="personinfo" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="isLogin" class="com.actions.Interceptor.isLogin"></interceptor>
+            <interceptor-stack name="isLoginCheck">
+                <interceptor-ref name="isLogin"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="isLoginCheck"></default-interceptor-ref>
+
+        <global-results>
+            <result name="403" type="httpheader">
+                  <param name="error">403</param>
+                  <param name="errorMessage">403 Forbidden</param>
+            </result>
+            <result name="login" type="redirect">/signin.jsp</result>
+        </global-results>
+
+        <action name="personinfo" class="com.actions.UserActions" method="personinfo">
+            <result name="success">/personinfo.jsp</result>
+        </action>
+        <action name="change_info" class="com.actions.UserActions" method="changeinfo">
+            <result name="success">/logout.jsp</result>
+            <result name="fail">/personinfo.jsp</result>
+        </action>
+        <action name="base_info" class="com.actions.UserActions" method="showUserProfile">
+            <result name="success">/profile.jsp</result>
+        </action>
+        <action name="updateprofile" class="com.actions.UserActions" method="updateProfile">
+            <result name="success" type="chain">base_info</result>
+        </action>
+        <action name="image" class="com.actions.ImageActions" method="viewImage">
+        </action>
+        <action name="uploadUserImage" class="com.actions.ImageActions" method="uploadUserImage">
+            <result name="success" type="chain">base_info</result>
+        </action>
+    </package>
+    <package name="image" namespace="/" extends="struts-default">
+        <action name="imagebyId" class="com.actions.ImageActions" method="viewImageByID"></action>
+    </package>
+    <package name="admin" namespace="/" extends="struts-default">
+        <interceptors>
+            <interceptor name="isAdmin" class="com.actions.Interceptor.isAdmin"></interceptor>
+            <interceptor-stack name="adminAuthCheck">
+                <interceptor-ref name="isAdmin"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="adminAuthCheck"></default-interceptor-ref>
+
+        <global-results>
+            <result name="403" type="httpheader">
+                  <param name="error">403</param>
+                  <param name="errorMessage">403 Forbidden</param>
+            </result>
+            <result name="login" type="redirect">/signin.jsp</result>
+        </global-results>
+
+        <action name="adminuser" class="com.actions.AdminActions" method="adminuser">
+            <result name="success">/adminuser.jsp</result>
+        </action>
+        <action name="deleteuser" class="com.actions.AdminActions" method="deleteuser">
+            <result name="success">/adminuser.jsp</result>
+        </action>
+        <action name="edituser_show" class="com.actions.AdminActions" method="edituser_show">
+            <result name="success">/edituser.jsp</result>
+        </action>
+        <action name="edituser" class="com.actions.AdminActions" method="edituser">
+            <result name="success" type="chain">adminuser</result>
+            <result name="fail">/index.jsp</result>
+        </action>
+        <action name="adduser" class="com.actions.AdminActions" method="adduser">
+            <result name="success" type="chain">adminuser</result>
+            <result name="fail">/adduser.jsp</result>
+        </action>
+
+        <action name="adminbook" class="com.actions.AdminActions" method="adminbook">
+            <result name="success">/adminbook.jsp</result>
+        </action>
+        <action name="deletebook" class="com.actions.AdminActions" method="deletebook">
+            <result name="success">/adminbook.jsp</result>
+        </action>
+        <action name="editbook_show" class="com.actions.AdminActions" method="editbook_show">
+            <result name="success">/editbook.jsp</result>
+        </action>
+        <action name="editbook" class="com.actions.AdminActions" method="editbook">
+            <result name="success" type="chain">adminbook</result>
+        </action>
+        <action name="addbook" class="com.actions.AdminActions" method="addbook">
+            <result name="success" type="chain">adminbook</result>
+            <result name="fail">/addbook.jsp</result>
+        </action>
+        <action name="adminorder" class="com.actions.AdminActions" method="adminorder">
+            <result name="success">/adminorder.jsp</result>
+        </action>
+        <action name="deleteorder" class="com.actions.AdminActions" method="deleteorder">
+            <result name="success">/adminorder.jsp</result>
+        </action>
+        <action name="editorder_show" class="com.actions.AdminActions" method="editorder_show">
+            <result name="success">/editorder.jsp</result>
+        </action>
+        <action name="editorder" class="com.actions.AdminActions" method="editorder">
+            <result name="success" type="chain">adminorder</result>
+        </action>
+        <action name="admin" class="com.actions.AdminActions" method="admin">
+            <result name="success">/adminhome.jsp</result>
+        </action>
+    </package>
+    <package name="testajax" namespace="/" extends="struts-default">
+        <action name="showsecond" class="com.actions.testAjaxActions" method="showsecond"></action>
+        <action name="showbookinfo" class="com.actions.testAjaxActions" method="showbookinfo"></action>
+        <action name="saleby" class="com.actions.testAjaxActions" method="salebyuser"></action>
+    </package>
+    <package name="index" namespace="/" extends="struts-default">
+        <action name="index" class="com.actions.AdminActions" method="index">
+            <result name="index">/index.jsp</result>
+        </action>
+    </package>
+</struts>

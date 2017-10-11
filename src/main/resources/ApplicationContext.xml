@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+    <!--注解支持  -->
+    <context:annotation-config />
+    <context:component-scan base-package="com" />
+
+    <!-- 配置数据源 -->
+    <bean id="MongoDBUtil" class="com.util.MongoDBUtil">
+        <property name="hostname" value="localhost"></property>
+        <property name="port" value="27017"></property>
+        <property name="database" value="bookstore"></property>
+    </bean>
+
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/web_db?characterEncoding=utf-8" />
+        <property name="username" value="root" />
+        <property name="password" value="123456" />
+    </bean>
+
+    <!-- Dao -->
+    <bean id="UsersDao" class="com.dao.UsersDaoImp"></bean>
+    <bean id="BooksDao" class="com.dao.BooksDaoImp"></bean>
+    <bean id="OrdersDao" class="com.dao.OrdersDaoImp"></bean>
+    <bean id="OrderItemDao" class="com.dao.OrderItemDaoImp"></bean>
+    <bean id="CategoryDao" class="com.dao.CategoryDaoImp"></bean>
+
+    <!-- Service -->
+    <bean id="UserService" class="com.service.UserServiceImp">
+        <property name="mongo" ref="MongoDBUtil"/>
+        <property name="userdao" ref="UsersDao"/>
+    </bean>
+    <bean id="BookService" class="com.service.BookServiceImp">
+        <property name="bookdao" ref="BooksDao"/>
+    </bean>
+    <bean id="OrderService" class="com.service.OrderServiceImp">
+        <property name="orderdao" ref="OrdersDao"/>
+    </bean>
+    <bean id="OrderItemService" class="com.service.OrderItemServiceImp">
+        <property name="orderitemdao" ref="OrderItemDao"/>
+    </bean>
+    <bean id="BuyService" class="com.service.BuyServiceImp">
+        <property name="bookdao" ref="BooksDao"/>
+        <property name="orderdao" ref="OrdersDao"/>
+        <property name="orderitemdao" ref="OrderItemDao"/>
+    </bean>
+    <bean id="AdminService" class="com.service.AdminServiceImp">
+        <property name="userdao" ref="UsersDao"/>
+        <property name="bookdao" ref="BooksDao"/>
+        <property name="orderdao" ref="OrdersDao"/>
+        <property name="orderitemdao" ref="OrderItemDao"/>
+    </bean>
+    <bean id="StatisticService" class="com.service.StatisticServiceImp">
+        <property name="userdao" ref="UsersDao"/>
+        <property name="bookdao" ref="BooksDao"/>
+        <property name="orderdao" ref="OrdersDao"/>
+        <property name="orderitemdao" ref="OrderItemDao"/>
+        <property name="categorydao" ref="CategoryDao"/>
+    </bean>
+
+    <!-- action -->
+    <bean id="UserActions" class="com.actions.UserActions" scope="prototype">
+        <property name="userService" ref="UserService" />
+    </bean>
+    <bean id="BookActions" class="com.actions.BookActions" scope="prototype">
+        <property name="bookservice" ref="BookService"/>
+    </bean>
+    <bean id="BuyActions" class="com.actions.BuyActions" scope="prototype">
+        <property name="buyservice" ref="BuyService"/>
+    </bean>
+    <bean id="AdminActions" class="com.actions.AdminActions" scope="prototype">
+        <property name="adminservice" ref="AdminService"/>
+    </bean>
+    <bean id="testAjaxActions" class="com.actions.testAjaxActions" scope="prototype">
+        <property name="orderservice" ref="OrderService"/>
+        <property name="userservice" ref="UserService"/>
+        <property name="bookservice" ref="BookService"/>
+        <property name="statisticservice" ref="StatisticService"/>
+    </bean>
+
+</beans>
+
